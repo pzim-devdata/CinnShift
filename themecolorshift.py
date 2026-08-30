@@ -194,11 +194,15 @@ def random_color():
 # ── Accent color detection ─────────────────────────────────────────
 
 def detect_accent_color(theme_dir):
-    """Detect the dominant accent color of a theme."""
+    """
+    Detect the dominant accent color of a theme.
+    Priority: @define-color declarations > most frequent non-neutral, saturated hex.
+    """
     css_files = list(theme_dir.rglob("*.css"))
     if not css_files:
         return None
 
+    # 1. Look for @define-color declarations (priority order)
     for css in css_files:
         try:
             content = css.read_text(encoding="utf-8", errors="ignore")
@@ -208,11 +212,13 @@ def detect_accent_color(theme_dir):
             r'@define-color\s+selected_bg_color\s+(#[0-9a-fA-F]{6})',
             r'@define-color\s+theme_selected_bg_color\s+(#[0-9a-fA-F]{6})',
             r'@define-color\s+accent_bg_color\s+(#[0-9a-fA-F]{6})',
+            r'@define-color\s+window_focus_border_color\s+(#[0-9a-fA-F]{6})',  # Added
         ):
             m = re.search(pattern, content)
             if m:
                 return m.group(1).lower()
 
+    # 2. Fallback: most frequent non-neutral, SATURATED hex (excludes grays)
     counter = Counter()
     for css in css_files:
         try:
@@ -221,8 +227,13 @@ def detect_accent_color(theme_dir):
             continue
         for match in re.finditer(r'#([0-9a-fA-F]{6})\b', content):
             color = f"#{match.group(1).lower()}"
-            if color not in NEUTRAL_HEX:
-                counter[color] += 1
+            if color in NEUTRAL_HEX:
+                continue
+            # Filter out low-saturation colors (grays, muted tones)
+            h, s, v = hex_to_hsv(color)
+            if s < 0.15:  # Exclude desaturated colors from accent detection
+                continue
+            counter[color] += 1
     if counter:
         return counter.most_common(1)[0][0]
     return None
