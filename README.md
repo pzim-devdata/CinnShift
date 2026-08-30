@@ -4,7 +4,18 @@ Change the accent color of any Cinnamon/GTK theme in seconds.
 
 This tool clones a theme, detects its dominant accent color and all derived variants (hover, active, borders, disabled states), shifts them to a new target color using HSV scaling, and applies the modified theme instantly via gsettings.
 
-#### Insert image of before/after comparison ####
+## Visual Comparison
+
+#### BEFORE
+
+![Before Theme](https://raw.githubusercontent.com/pzim-devdata/AnyThemeColorShifter-for-Cinnamon/main/BEFORE.png)
+
+#### AFTER
+
+Applied command: `python3 themecolorshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --variant random`
+
+![After Theme](https://raw.githubusercontent.com/pzim-devdata/AnyThemeColorShifter-for-Cinnamon/main/AFTER.png)
+
 
 ## Quick Start
 
