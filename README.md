@@ -1,8 +1,29 @@
-# AnyThemeColorShifter-for-Cinnamon
+# CinnShift — AnyThemeColorShifter for Cinnamon & GTK
 
-Change the accent color of any Cinnamon/GTK theme in seconds.
+**Change the accent color of any existing Cinnamon/GTK theme in seconds.**
 
-This tool clones a theme, detects its dominant accent color and all derived variants (hover, active, borders, disabled states), shifts them to a new target color using HSV scaling, and applies the modified theme instantly via gsettings.
+CinnShift is a lightweight Python script that clones any Cinnamon or GTK theme, detects its dominant accent color and all derived variants (hover, active, borders, disabled states), shifts them to a new target color using HSV scaling, and applies the modified theme instantly via `gsettings`.
+
+No manual CSS editing. No theme rebuild from scratch. Works with any existing theme: Orchis, Qogir, Mint-Y, CBlack, and others.
+
+---
+
+## Why CinnShift?
+
+There is no native tool to dynamically change accent colors in Cinnamon themes. Existing solutions have limitations:
+
+| Feature | Manual CSS edit | [Oomox](https://github.com/themix-project/oomox) | [DermoDeX](https://github.com/duracell80/DermoDeX) | **CinnShift** |
+|---------|:---:|:---:|:---:|:---:|
+| Modify existing themes | ✓ | ✗ | ✗ | ✓ |
+| Apply to Cinnamon shell | ✓ | ✗ | ✓ | ✓ |
+| Apply to GTK apps | ✓ | ✓ | ✗ | ✓ |
+| Separate App/Desktop targets | ✗ | ✗ | ✗ | ✓ |
+| Custom hex color input | ✗ | ✓ | ✗ | ✓ |
+| Random color generator | ✗ | ✗ | ✓ | ✓ |
+| Dry-run preview | ✗ | ✗ | ✗ | ✓ |
+| Original theme untouched | ✗ | ✓ | ✓ | ✓ |
+
+---
 
 ## Visual Comparison
 
@@ -12,10 +33,11 @@ This tool clones a theme, detects its dominant accent color and all derived vari
 
 #### AFTER
 
-Applied command: `python3 themecolorshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --variant random`
+Applied command: `themecolorshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --variant random`
 
 ![After Theme](https://raw.githubusercontent.com/pzim-devdata/AnyThemeColorShifter-for-Cinnamon/main/AFTER.png)
 
+---
 
 ## Quick Start
 
@@ -29,15 +51,21 @@ chmod +x ~/.local/bin/themecolorshift.py
 themecolorshift.py --pick --theme-source Qogir-Light --variant mycolor
 ```
 
+---
+
 ## Dependencies
 
-- `python3` (standard on all Linux distributions)
-- `gsettings` (bundled with Cinnamon/GNOME)
-- `zenity` (optional, for `--pick` interactive color picker)
+| Dependency | Required | Purpose |
+|------------|:--------:|---------|
+| `python3` | Yes | Standard on all Linux distributions |
+| `gsettings` | Yes | Bundled with Cinnamon/GNOME |
+| `zenity` | No | Interactive color picker (`--pick`) |
 
 ```bash
 sudo apt install zenity   # Debian/Ubuntu/Mint
 ```
+
+---
 
 ## Usage Examples
 
@@ -58,6 +86,8 @@ themecolorshift.py "#6d4aff" --theme-app Orchis-Light --theme-desktop CBlack --v
 themecolorshift.py "#e66100" --theme-source Qogir-Light --dry-run
 ```
 
+---
+
 ## Arguments
 
 | Argument | Description |
@@ -72,8 +102,39 @@ themecolorshift.py "#e66100" --theme-source Qogir-Light --dry-run
 | `--dry-run` | Preview substitutions without modifying files |
 | `--no-refresh` | Skip live CSS reload (for SSH/headless) |
 
-At least one of `--theme-source`, `--theme-app`, or `--theme-desktop` is required.
+At least one of `--theme-source`, `--theme-app`, or `--theme-desktop` is required.  
 One of `color`, `--pick`, or `--random` is required.
+
+---
+
+## How It Works
+
+1. **Locate** the source theme (`~/.local/share/themes/`, then `/usr/share/themes/`, then `/usr/share/cinnamon/theme/`)
+2. **Detect** the accent color via `@define-color selected_bg_color` or `@define-color window_focus_border_color` (gray colors filtered for accuracy)
+3. **Scan** all CSS and SVG files for hue-related derivatives
+4. **Shift** all derivatives to the new target color using multiplicative HSV scaling
+5. **Clone** the theme, substitute colors in CSS/SVG/gtkrc/metadata files
+6. **Apply** via `gsettings` and force CSS reload by toggling themes briefly
+
+The original theme is never modified. A new theme is created with the suffix you specify.
+
+---
+
+## Autostart (random color on each boot)
+
+Open **Startup Applications** in Cinnamon menu, click **Add**, and enter:
+
+**Entry 1 — Applications (GTK):**
+
+- **Name**: `AnyThemeColorShifter`
+- **Command**: `/home/YOUR_USERNAME/.local/bin/themecolorshift.py --random --theme-app Orchis-Light --variant auto`
+
+**Entry 2 — Desktop (Cinnamon shell):**
+
+- **Name**: `AnyThemeColorShifter-Desktop`
+- **Command**: `/home/YOUR_USERNAME/.local/bin/themecolorshift.py --random --theme-desktop cinnamon --variant auto`
+
+---
 
 ## Important Notes
 
@@ -81,28 +142,27 @@ One of `color`, `--pick`, or `--random` is required.
 
 **PNG assets:** PNG/raster images (GTK2 checkboxes, switches) are not recolored. Only CSS and SVG files are processed. Some elements may retain original colors if they rely on PNG assets.
 
-## Autostart (random color on each boot)
+---
 
-Open **Startup Applications** in Cinnamon menu, click **Add**, and enter:
+## Compatibility
 
-- **Name**: `AnyThemeColorShifter`
-- **Command**: `/home/YOUR_USERNAME/.local/bin/themecolorshift.py --random --theme-app Orchis-Light --variant auto`
+Tested on:
 
-To also shift the Desktop (Cinnamon shell), add another entry:
+| Distribution | DE | Status |
+|--------------|----|:------:|
+| Debian 13 (Trixie) | Cinnamon 6.x | ✓ |
+| Linux Mint 21–22 | Cinnamon 6.x | ✓ |
+| Ubuntu 24.04 | Cinnamon (PPA) | ✓ |
 
-- **Name**: `AnyThemeColorShifter-Desktop`
-- **Command**: `/home/YOUR_USERNAME/.local/bin/themecolorshift.py --random --theme-desktop cinnamon --variant auto`
+Requires a Cinnamon or GNOME-based desktop environment with `gsettings` support.
 
-## How It Works
+---
 
-1. Locates the source theme (`~/.local/share/themes/`, then `/usr/share/themes/`, then `/usr/share/cinnamon/theme/`)
-2. Detects the accent color via `@define-color selected_bg_color` or `@define-color window_focus_border_color`, filters out gray colors for better accuracy.
-3. Scans all CSS and SVG files for hue-related derivatives
-4. Shifts all derivatives to the new target color using multiplicative HSV scaling
-5. Clones the theme, substitutes colors in CSS/SVG/gtkrc/metadata files
-6. Applies via gsettings and forces CSS reload by toggling themes briefly
+## Contributing
 
+Bug reports, feature requests, and pull requests welcome at [GitHub Issues](https://github.com/pzim-devdata/AnyThemeColorShifter-for-Cinnamon/issues).
 
+---
 
 ## License
 
