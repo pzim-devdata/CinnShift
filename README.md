@@ -96,7 +96,7 @@ To also shift the Desktop (Cinnamon shell), add another entry:
 ## How It Works
 
 1. Locates the source theme (`~/.local/share/themes/`, then `/usr/share/themes/`, then `/usr/share/cinnamon/theme/`)
-2. Detects the accent color via `@define-color selected_bg_color` in CSS
+2. Detects the accent color via `@define-color selected_bg_color` or `@define-color window_focus_border_color`, filters out gray colors for better accuracy.
 3. Scans all CSS and SVG files for hue-related derivatives
 4. Shifts all derivatives to the new target color using multiplicative HSV scaling
 5. Clones the theme, substitutes colors in CSS/SVG/gtkrc/metadata files
