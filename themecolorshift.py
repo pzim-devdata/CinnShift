@@ -172,13 +172,23 @@ def pick_color(default="#6d4aff"):
     return None
 
 def random_color():
-    """Generate a random pleasant accent color (high saturation, high value)."""
+    """Generate a random pleasant accent color (8 perceptually balanced families)."""
     import random
-    hue_options = [0.0, 0.08, 0.15, 0.2, 0.25, 0.3, 0.4, 0.45, 0.5,
-                   0.55, 0.6, 0.7, 0.75, 0.8, 0.9]
-    h = random.choice(hue_options)
-    s = random.uniform(0.6, 0.95)
-    v = random.uniform(0.7, 1.0)
+    # One fixed hue per family, equal weight, small jitter for variety
+    base_hues = [
+        0.00,  # red
+        0.07,  # orange
+        0.11,  # yellow
+        0.20,  # green
+        0.48,  # cyan
+        0.60,  # blue
+        0.78,  # magenta
+        0.92,  # pink
+    ]
+    h = random.choice(base_hues) + random.uniform(-0.015, 0.015)
+    h = h % 1.0
+    s = random.uniform(0.65, 0.95)
+    v = random.uniform(0.75, 1.0)
     return hsv_to_hex(h, s, v)
 
 # ── Accent color detection ─────────────────────────────────────────
