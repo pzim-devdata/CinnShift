@@ -1,10 +1,12 @@
-# CinnShift — AnyThemeColorShifter for Cinnamon & GTK
+# CinnShift — Instant Accent Color Shifter for Cinnamon & GTK
 
-**Change the accent color of any existing Cinnamon/GTK theme in seconds.**
+**CLI tool to recolor any existing Cinnamon/GTK theme in seconds — without deleting it — and switch to the new theme instantly.**
 
-CinnShift is a lightweight Python script that clones any Cinnamon or GTK theme, detects its dominant accent color and all derived variants (hover, active, borders, disabled states), shifts them to a new target color using HSV scaling, and applies the modified theme instantly via `gsettings`.
+CinnShift is a lightweight Python command-line tool that clones any Cinnamon or GTK theme, detects its dominant accent color and all derived variants (hover, active, borders, disabled states), shifts them to a new target color using HSV scaling, and applies the modified theme instantly via `gsettings`.
 
 No manual CSS editing. No theme rebuild from scratch. Works with any existing theme: Orchis, Qogir, Mint-Y, CBlack, and others.
+
+Repository: [pzim-devdata/CinnShift](https://github.com/pzim-devdata/CinnShift)
 
 ---
 
@@ -12,16 +14,20 @@ No manual CSS editing. No theme rebuild from scratch. Works with any existing th
 
 There is no native tool to dynamically change accent colors in Cinnamon themes. Existing solutions have limitations:
 
-| Feature | Manual CSS edit | [Oomox](https://github.com/themix-project/oomox) | [DermoDeX](https://github.com/duracell80/DermoDeX) | **CinnShift** |
-|---------|:---:|:---:|:---:|:---:|
-| Modify existing themes | ✓ | ✗ | ✗ | ✓ |
-| Apply to Cinnamon shell | ✓ | ✗ | ✓ | ✓ |
-| Apply to GTK apps | ✓ | ✓ | ✗ | ✓ |
-| Separate App/Desktop targets | ✗ | ✗ | ✗ | ✓ |
-| Custom hex color input | ✗ | ✓ | ✗ | ✓ |
-| Random color generator | ✗ | ✗ | ✓ | ✓ |
-| Dry-run preview | ✗ | ✗ | ✗ | ✓ |
-| Original theme untouched | ✗ | ✓ | ✓ | ✓ |
+| Feature | Manual CSS edit | [Oomox](https://github.com/themix-project/oomox) | **CinnShift** |
+|---------|:---:|:---:|:---:|
+| Modify existing themes | ✓ | ✗ | ✓ |
+| Apply to Cinnamon shell | ✓ | ✗ | ✓ |
+| Apply to GTK apps | ✓ | ✓ | ✓ |
+| Separate App/Desktop targets | ✗ | ✗ | ✓ |
+| Custom hex color input | ✗ | ✓ | ✓ |
+| Random color generator | ✗ | ✗ | ✓ |
+| Color palettes | ✗ | Partial | ✓ |
+| Selector-targeted recoloring (hover, focus...) | ✗ | ✗ | ✓ |
+| Free-form CSS selector targeting | ✗ | ✗ | ✓ |
+| Auto-detect active themes | ✗ | ✗ | ✓ |
+| Dry-run preview | ✗ | ✗ | ✓ |
+| Original theme untouched | ✗ | ✓ | ✓ |
 
 ---
 
@@ -29,13 +35,13 @@ There is no native tool to dynamically change accent colors in Cinnamon themes. 
 
 #### BEFORE
 
-![Before Theme](https://raw.githubusercontent.com/pzim-devdata/AnyThemeColorShifter-for-Cinnamon/main/BEFORE.png)
+![Before Theme](https://raw.githubusercontent.com/pzim-devdata/CinnShift/main/BEFORE.png)
 
 #### AFTER
 
-Applied command: `themecolorshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --variant random`
+Applied command: `cinnshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --variant random`
 
-![After Theme](https://raw.githubusercontent.com/pzim-devdata/AnyThemeColorShifter-for-Cinnamon/main/AFTER.png)
+![After Theme](https://raw.githubusercontent.com/pzim-devdata/CinnShift/main/AFTER.png)
 
 ---
 
@@ -44,11 +50,11 @@ Applied command: `themecolorshift.py --random --theme-app Orchis-Light --theme-d
 ```bash
 # Install
 mkdir -p ~/.local/bin
-curl -o ~/.local/bin/themecolorshift.py https://raw.githubusercontent.com/pzim-devdata/AnyThemeColorShifter-for-Cinnamon/main/themecolorshift.py
-chmod +x ~/.local/bin/themecolorshift.py
+curl -o ~/.local/bin/cinnshift.py https://raw.githubusercontent.com/pzim-devdata/CinnShift/main/cinnshift.py
+chmod +x ~/.local/bin/cinnshift.py
 
 # Run
-themecolorshift.py --pick --theme-source Qogir-Light --variant mycolor
+cinnshift.py --pick --theme-source Qogir-Light --variant mycolor
 ```
 
 ---
@@ -67,23 +73,74 @@ sudo apt install zenity   # Debian/Ubuntu/Mint
 
 ---
 
-## Usage Examples
+## Exemples
+
+Judicious and aesthetically pleasing commands, with what each one does:
+
+### Everyday use
 
 ```bash
-# Pick a color interactively, apply to Desktop + Applications
-themecolorshift.py --pick --theme-source Qogir-Light
+# Auto-detect current active themes, generate a random pleasant color,
+# shift accent everywhere, and reload live
+cinnshift.py --random
 
-# Random color on Applications (GTK) only
-themecolorshift.py --random --theme-app Orchis-Light --variant random
+# Open a color picker, apply to current active themes only (clone kept)
+cinnshift.py --pick
 
-# Random color on Desktop (Cinnamon) only
-themecolorshift.py --random --theme-desktop cinnamon --variant random
+# Shift both GTK apps and the Cinnamon desktop to purple
+cinnshift.py "#6d4aff" --theme-app Orchis-Light --theme-desktop cinnamon
+```
 
-# Specific hex color, different themes for Desktop and Applications
-themecolorshift.py "#6d4aff" --theme-app Orchis-Light --theme-desktop CBlack --variant mix
+### Soft palettes
 
-# Preview substitutions without applying
-themecolorshift.py "#e66100" --theme-source Qogir-Light --dry-run
+```bash
+# Transform the existing accent of the active theme into a pale (pastel) version
+cinnshift.py --palette pale --theme-source Orchis-Light
+
+# Random vivid color on both Desktop and Applications
+cinnshift.py --palette vibrant --random --theme-app Orchis-Light --theme-desktop cinnamon
+
+# Neon accent on a dark shell theme
+cinnshift.py "#39ff14" --palette neon --theme-desktop cinnamon
+
+# Desaturate a provided color into the grayscale palette
+cinnshift.py "#6d4aff" --palette grayscale --theme-app Orchis-Light
+```
+
+### Selector-targeted recoloring
+
+Selectors add modifications on top of the normal accent shift: colors found inside matching CSS blocks are also recolored (using the accent color directly, no brightening or darkening).
+
+```bash
+# Recolor mouse-hover states with the accent, keep the rest intact
+cinnshift.py --theme-app Orchis-Light --selector hover
+
+# Shift accent AND recolor hover + focus + separators
+cinnshift.py "#6d4aff" --theme-desktop cinnamon --selector hover --selector focus --selector separator
+
+# Dynamic:static combo: only the hover state of buttons
+cinnshift.py "#e66100" --theme-app Orchis-Light --selector hover:button
+
+# Static element alone: repaint all separators with the accent color
+cinnshift.py --theme-desktop cinnamon --selector separator
+```
+
+### Free-form CSS targeting
+
+```bash
+# Target any raw CSS selector directly
+cinnshift.py "#6d4aff" --theme-app Orchis-Light --css ".button:hover"
+cinnshift.py "#6d4aff" --theme-desktop cinnamon --css "#panel" --css ".window-list-item-box:hover"
+```
+
+### Preview and automation
+
+```bash
+# Preview substitutions without modifying anything
+cinnshift.py "#e66100" --theme-source Qogir-Light --dry-run
+
+# Headless/SSH usage: skip live reload
+cinnshift.py --random --theme-app Orchis-Light --no-refresh
 ```
 
 ---
@@ -92,18 +149,70 @@ themecolorshift.py "#e66100" --theme-source Qogir-Light --dry-run
 
 | Argument | Description |
 |----------|-------------|
-| `color` | Target hex color (e.g. `"#6d4aff"`) |
+| `color` | Target hex color (e.g. `"#6d4aff"`). Optional: omitted means no accent change |
 | `--pick` | Open interactive color picker (zenity) |
 | `--random` | Generate a random pleasant color |
+| `--palette NAME` | Constrain colors to a palette: `pale`, `vibrant`, `neon`, `grayscale`, `dark`, `soft` |
 | `--theme-source NAME` | Use one theme for both Desktop + Applications |
 | `--theme-app NAME` | Source theme for Applications (GTK) only |
 | `--theme-desktop NAME` | Source theme for Desktop (Cinnamon) only |
-| `--variant SUFFIX` | Suffix for the new theme name (default: `-custom`) |
+| `--variant SUFFIX` | Fixed suffix for the new theme name (default: auto-numbering, see below) |
+| `--selector SPEC` | Add selector-targeted replacement. Formats: `hover`, `button`, `hover:button` |
+| `--css PATTERN` | Free-form CSS selector (e.g. `--css ".button:hover"`). Repeatable |
 | `--dry-run` | Preview substitutions without modifying files |
 | `--no-refresh` | Skip live CSS reload (for SSH/headless) |
 
-At least one of `--theme-source`, `--theme-app`, or `--theme-desktop` is required.  
-One of `color`, `--pick`, or `--random` is required.
+### Defaults behavior
+
+**Themes:** If no `--theme-source`, `--theme-app`, or `--theme-desktop` is given, CinnShift auto-detects the currently active themes and uses them as sources.
+
+**Colors:** If neither `color`, `--random`, nor `--pick` is given, the script performs **no accent change**: it only clones the theme (or applies selectors using the existing accent). This lets you run `cinnshift.py --selector hover` on an existing theme without touching its main color.
+
+**Palettes:**
+- `--palette pale --random`: random color drawn inside the palette constraints
+- `cinnshift.py "#6d4aff" --palette pale`: transforms the given color to fit the palette
+- `cinnshift.py --palette pale`: transforms the existing accent color of the theme
+
+### Selector grammar
+
+`--selector` accepts three forms. Dynamic (state-based) and static (element-based) filters can be combined:
+
+| Syntax | Meaning |
+|--------|---------|
+| `--selector hover` | All blocks containing the `:hover` state |
+| `--selector button` | All blocks styling buttons (any state) |
+| `--selector hover:button` | Hover state **of** buttons only |
+| `--css ".button:hover"` | Raw free-form CSS selector |
+
+**Dynamic selectors** (state pseudo-classes): `hover`, `active`, `focus`, `focus-visible`, `checked`, `selected`, `disabled` (alias: `insensitive`), `visited`, `indeterminate`, `backdrop`, `drop`, `drag`.
+
+**Static elements** (structural):
+
+| Category | Names |
+|----------|-------|
+| Window structure | `headerbar`, `titlebar`, `decoration`, `wm-border`, `dialog`, `sidebar`, `paned`, `statusbar`, `toolbar` |
+| Delimiters | `separator`, `frame`, `border`, `infobar` |
+| Controls | `button`, `entry`, `switch`, `checkbox`, `radio`, `slider`, `progress`, `scrollbar`, `spinbutton`, `combobox` |
+| Lists & navigation | `tabs`, `treeview`, `rows`, `link`, `spinner` |
+| Overlays | `tooltip`, `popover`, `menu`, `notification`, `osd` |
+| Cinnamon shell | `panel`, `menu-cin`, `calendar-cin`, `workspace`, `expo`, `alt-tab`, `desklet`, `window-list`, `grouped-list` |
+
+**Static elements ignore the neutral-color exclusion list:** gray separators, borders, and window frames get tinted with the accent hue while preserving their original lightness ratio.
+
+**Selector color rule:** colors found inside matched blocks receive the target accent color as-is (no brightening or darkening), so results stay visually perceptible even on very dark themes.
+
+---
+
+## Color Palettes
+
+| Palette | Saturation | Brightness | Character |
+|---------|-----------|------------|-----------|
+| `pale` | 0.20–0.45 | 0.85–1.00 | Soft pastels |
+| `vibrant` | 0.80–1.00 | 0.75–0.95 | Vivid saturated tones |
+| `neon` | 0.90–1.00 | 0.92–1.00 | Maximum fluorescent punch |
+| `grayscale` | 0.00–0.05 | 0.30–0.80 | Pure grays |
+| `dark` | 0.55–0.85 | 0.30–0.55 | Deep muted tones |
+| `soft` | 0.40–0.65 | 0.70–0.90 | Balanced moderation |
 
 ---
 
@@ -116,31 +225,49 @@ One of `color`, `--pick`, or `--random` is required.
 5. **Clone** the theme, substitute colors in CSS/SVG/gtkrc/metadata files
 6. **Apply** via `gsettings` and force CSS reload by toggling themes briefly
 
-The original theme is never modified. A new theme is created with the suffix you specify.
+The original theme is never modified. A new theme is created and activated.
+
+---
+
+## Theme Naming and Auto-Numbering
+
+Without `--variant`, CinnShift names the derived theme by appending an incrementing number to the source name, avoiding ever-growing names like `theme-custom-custom-custom`:
+
+- First run: `cinnamon` → `cinnamon-1`
+- Second run: `cinnamon-1` → `cinnamon-2`
+- Next run: `cinnamon-2` → `cinnamon-3`
+
+With `--variant mix`, the suffix is fixed: `Orchis-Light` → `Orchis-Light-mix` (re-running replaces the existing derived theme). The `mix` name keeps hues grounded to the actual color base for harmonious mixes.
 
 ---
 
 ## Autostart (random color on each boot)
 
-Open **Startup Applications** in Cinnamon menu, click **Add**, and enter:
+Open **Startup Applications** in the Cinnamon menu, click **Add**, and enter:
 
 **Entry 1 — Applications (GTK):**
 
-- **Name**: `AnyThemeColorShifter`
-- **Command**: `/home/YOUR_USERNAME/.local/bin/themecolorshift.py --random --theme-app Orchis-Light --variant auto`
+- **Name**: `CinnShift`
+- **Command**: `/home/YOUR_USERNAME/.local/bin/cinnshift.py --random --theme-app Orchis-Light --variant auto`
 
 **Entry 2 — Desktop (Cinnamon shell):**
 
-- **Name**: `AnyThemeColorShifter-Desktop`
-- **Command**: `/home/YOUR_USERNAME/.local/bin/themecolorshift.py --random --theme-desktop cinnamon --variant auto`
+- **Name**: `CinnShift-Desktop`
+- **Command**: `/home/YOUR_USERNAME/.local/bin/cinnshift.py --random --theme-desktop cinnamon --variant auto`
+
+**Optional: only change color every 3rd day of the month** (limit churn):
+
+**Command**: `python3 -c "import datetime,subprocess,sys; sys.exit(0 if datetime.date.today().day % 3 else 1)" && /home/YOUR_USERNAME/.local/bin/cinnshift.py --random --theme-app Orchis-Light --variant auto`
 
 ---
 
 ## Important Notes
 
-**Theme cloning:** The original theme is never modified. A new theme is created with the suffix you specify. If you omit `--variant`, the suffix defaults to `-custom` (e.g., `Qogir-Light` becomes `Qogir-Light-custom`).
+**Theme cloning:** The original theme is never modified. A new theme is created with the suffix you specify (or an incremented number by default).
 
 **PNG assets:** PNG/raster images (GTK2 checkboxes, switches) are not recolored. Only CSS and SVG files are processed. Some elements may retain original colors if they rely on PNG assets.
+
+**Cinnamon applets:** Some applets (e.g. grouped-window-list) may cache underline colors and not update immediately after a theme color change; re-opening the applet or restarting Cinnamon (`Ctrl+Alt+Esc`) forces the refresh.
 
 ---
 
@@ -160,7 +287,7 @@ Requires a Cinnamon or GNOME-based desktop environment with `gsettings` support.
 
 ## Contributing
 
-Bug reports, feature requests, and pull requests welcome at [GitHub Issues](https://github.com/pzim-devdata/AnyThemeColorShifter-for-Cinnamon/issues).
+Bug reports, feature requests, and pull requests welcome at [GitHub Issues](https://github.com/pzim-devdata/CinnShift/issues).
 
 ---
 
