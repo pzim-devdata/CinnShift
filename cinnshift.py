@@ -28,10 +28,10 @@ Usage:
   python themecolorshift.py --random
 
   # Shift only Applications (GTK)
-  python themecolorshift.py --random --theme-app Orchis-Light --variant mix
+  python themecolorshift.py --random --theme-app Orchis-Light --variant proton_mix
 
   # Shift both Desktop and Applications from different sources
-  python themecolorshift.py "#6d4aff" --theme-app Orchis-Light --theme-desktop CBlack --variant mix
+  python themecolorshift.py "#6d4aff" --theme-app Orchis-Light --theme-desktop CBlack --variant proton_mix
 
   # Single source for Desktop + Applications
   python themecolorshift.py --random --theme-source Qogir-Light
@@ -173,7 +173,7 @@ SELECTOR_STATIC = {
     # Cinnamon-specific
     'panel': ['#panel'],
     'menu-cin': ['.menu'],
-    'calendar-cin': ['calendar'],
+    'calendar-cin': ['calendar', 'calendar-events-main-box'],
     'workspace': ['workspace-switcher'],
     'expo': ['expo'],
     'alt-tab': ['switcher-popup'],
@@ -613,6 +613,18 @@ def process_selectors_in_file(filepath, selector_specs, css_patterns,
                 substitutions.append((orig_hex, replacement, str(filepath.name)))
                 modified = True
 
+#        # Handle the 'transparent' keyword ONLY on gradient properties
+#        # (Cinnamon custom props: -gradient-start/end, -slider-*-color)
+#        if 'transparent' in new_body:
+#            new_body = re.sub(
+#                r'(-(?:gradient-start|gradient-end))\s*:\s*transparent',
+#                rf'\1: {target_hex.lower()}',
+#                new_body
+#            )
+#            if new_body != body:
+#                substitutions.append(("transparent", target_hex, str(filepath.name)))
+#                modified = True
+
         if new_body != body:
             return selector_text + "{" + new_body + "}"
         return m.group(0)
@@ -920,6 +932,12 @@ def shift_one_theme(source_name, target_accent, variant_suffix, dry_run=False,
             shutil.rmtree(source_dir)
             print(f"  [INFO] Temporary copy removed: {source_dir.name}")
 
+def normalize_variant(v):
+    """Ensure variant starts with '-'."""
+    if not v:
+        return "-custom"
+    return v if v.startswith("-") else f"-{v}"
+
 # ── Main entry point ────────────────────────────────────────────────
 
 def strip_trailing_suffix(name):
@@ -979,8 +997,19 @@ def main():
                         help="Suffix for the derived theme name (default: -custom)")
     parser.add_argument("--selector", action="append", default=[],
                         help="Add selector-targeted replacement. "
-                             "Formats: 'hover', 'button', 'hover:button'. "
-                             "Repeatable for multiple selectors.")
+                             "Dynamic states: hover, active, focus, focus-visible, "
+                             "checked, selected, disabled, insensitive, visited, "
+                             "indeterminate, backdrop, drop, drag. "
+                             "Static elements: headerbar, titlebar, decoration, "
+                             "wm-border, dialog, sidebar, paned, statusbar, "
+                             "toolbar, separator, frame, border, infobar, button, "
+                             "entry, switch, checkbox, radio, slider, progress, "
+                             "scrollbar, spinbutton, combobox, tabs, treeview, "
+                             "rows, link, spinner, tooltip, popover, menu, "
+                             "notification, osd, panel, menu-cin, calendar-cin, "
+                             "workspace, expo, alt-tab, desklet, window-list, "
+                             "grouped-list. Formats: 'hover', 'button', "
+                             "'hover:button'. Repeatable.")
     parser.add_argument("--css", action="append", default=[],
                         help="Free-form CSS selector for targeted replacement. "
                              "Example: --css '.button:hover'. Repeatable.")
@@ -989,6 +1018,7 @@ def main():
     parser.add_argument("--no-refresh", action="store_true",
                         help="Skip theme toggle-refresh (for headless/SSH)")
     args = parser.parse_args()
+    args.variant = normalize_variant(args.variant)
 
     # ── Determine target color ───────────────────────────────────
     target = None
