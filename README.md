@@ -97,7 +97,7 @@ cinnshift.py "#6d4aff" --theme-app Orchis-Light --theme-desktop cinnamon
 # Balanced recoloring: hover, pressed, checked, selected states
 # plus tinted separators. Rich visual impact, nothing obscured.
 python cinnshift.py --random \
-  --selector hover --selector active --selector checked --selector selected \
+  --selector hover --selector active --selector checked --selector selected --selector calendar-cin\
   --selector focus --selector separator --palette pale
 ```
 
@@ -109,6 +109,16 @@ python cinnshift.py --random   --selector hover --selector active --selector che
 ```
 
 **Effect:** same recoloring minus the focus states. Fields (like the Cinnamon menu search entry) keep their original background: recommended if filled entry boxes bother you.
+
+### Calendar vertical border
+
+```bash
+# The stubborn vertical line in calendar@cinnamon.org comes from
+# .calendar-events-main-box border-right, not from .separator:
+cinnshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon \
+  --selector hover --selector active --selector checked --selector selected \
+  --selector separator --css ".calendar-events-main-box"
+```
 
 ### Full theme recoloring (maximum coverage).
 
@@ -250,6 +260,15 @@ cinnshift.py --random --theme-app Orchis-Light --no-refresh
 | Lists & navigation | `tabs`, `treeview`, `rows`, `link`, `spinner` |
 | Overlays | `tooltip`, `popover`, `menu`, `notification`, `osd` |
 | Cinnamon shell | `panel`, `menu-cin`, `calendar-cin`, `workspace`, `expo`, `alt-tab`, `desklet`, `window-list`, `grouped-list` |
+
+**Cinnamon calendar specifics:** the vertical divider between the calendar grid
+and the event list in `calendar@cinnamon.org` is drawn by a `border-right` on
+`.calendar-events-main-box` (not by a separator pseudo-class). The `calendar-cin`
+selector covers both the calendar grid and this border:
+
+```bash
+# Recolor calendar grid + its vertical event border with the accent
+cinnshift.py "#2a6bc6" --theme-desktop cinnamon --selector calendar-cin
 
 **Static elements ignore the neutral-color exclusion list:** gray separators, borders, and window frames get tinted with the accent hue while preserving their original lightness ratio.
 
