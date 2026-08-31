@@ -291,7 +291,7 @@ Without `--variant`, CinnShift names the derived theme by appending an increment
 - Second run: `cinnamon-1` → `cinnamon-2`
 - Next run: `cinnamon-2` → `cinnamon-3`
 
-With `--variant mix`, the suffix is fixed: `Orchis-Light` → `Orchis-Light-mix` (re-running replaces the existing derived theme). The `mix` name keeps hues grounded to the actual color base for harmonious mixes.
+With `--variant`, the suffix is fixed: For instance with `--variant mix`: `Orchis-Light` → `Orchis-Light-mix` → `Orchis-Light-mix` (re-running replaces the existing derived theme). 
 
 ---
 
