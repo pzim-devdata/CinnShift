@@ -113,6 +113,18 @@ python cinnshift.py --random \
 ```
 
 **Effect:** the deepest recoloring CinnShift can perform: 44 selectors covering window chrome (headerbar, dialogs, sidebars, toolbars), all controls (buttons, entries, switches, sliders...), delimiters, Cinnamon shell elements (workspaces, expo, desklets, window lists) and every interactive state (hover, focus, checked, disabled...). Backgrounds of overlay surfaces are deliberately excluded to preserve text readability in applets.
+**Deliberately omitted selectors** (background carriers that would obscure applet content):
+
+| Selector | Reason |
+|----------|--------|
+| `tooltip` | Full background fill hides tooltip text |
+| `popover` | Full popup surface background |
+| `menu` | GTK dropdown/menu backgrounds |
+| `menu-cin` | Cinnamon start menu background |
+| `notification` | Banner full background |
+| `osd` | System OSD popup background |
+| `calendar-cin` | Calendar widget background |
+| `panel` | Entire taskbar background |
 
 ### Soft palettes
 
