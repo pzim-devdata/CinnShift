@@ -91,6 +91,29 @@ cinnshift.py --pick
 cinnshift.py "#6d4aff" --theme-app Orchis-Light --theme-desktop cinnamon
 ```
 
+### Full theme recoloring (maximum coverage).
+
+```bash
+# Recolor virtually every element of the theme: borders, controls,
+# states and shell elements. Avoids backgrounds carriers (tooltip,
+# popover, menu, menu-cin, notification, osd, calendar-cin, panel)
+# so applet surfaces (calendar@cinnamon.org, Cinnamenu...) stay readable.
+python cinnshift.py --random \
+  --selector headerbar --selector titlebar --selector decoration --selector wm-border \
+  --selector dialog --selector sidebar --selector paned --selector statusbar --selector toolbar \
+  --selector separator --selector frame --selector border --selector infobar \
+  --selector button --selector entry --selector switch --selector checkbox --selector radio \
+  --selector slider --selector progress --selector scrollbar --selector spinbutton --selector combobox \
+  --selector tabs --selector treeview --selector rows --selector link --selector spinner \
+  --selector workspace --selector expo --selector alt-tab --selector desklet \
+  --selector window-list --selector grouped-list \
+  --selector hover --selector active --selector focus --selector focus-visible \
+  --selector checked --selector selected --selector disabled --selector visited \
+  --selector indeterminate --selector backdrop --selector drop --selector drag
+```
+
+**Effect:** the deepest recoloring CinnShift can perform: 44 selectors covering window chrome (headerbar, dialogs, sidebars, toolbars), all controls (buttons, entries, switches, sliders...), delimiters, Cinnamon shell elements (workspaces, expo, desklets, window lists) and every interactive state (hover, focus, checked, disabled...). Backgrounds of overlay surfaces are deliberately excluded to preserve text readability in applets.
+
 ### Soft palettes
 
 ```bash
