@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-themecolorshift.py — AnyThemeColorShifter
+cinnshift.py — pzim-devdata
 
 Dynamic accent color shifter for Cinnamon desktop themes.
 Clones a source theme, detects its accent color and all HSV derivatives,
@@ -22,46 +22,46 @@ Features:
 
 Usage:
   # Auto-detect current themes and clone only (no color change)
-  python themecolorshift.py
+  python cinnshift.py
 
   # Auto-detect + shift with a random color
-  python themecolorshift.py --random
+  python cinnshift.py --random
 
   # Shift only Applications (GTK)
-  python themecolorshift.py --random --theme-app Orchis-Light --variant proton_mix
+  python cinnshift.py --random --theme-app Orchis-Light --variant proton_mix
 
   # Shift both Desktop and Applications from different sources
-  python themecolorshift.py "#6d4aff" --theme-app Orchis-Light --theme-desktop CBlack --variant proton_mix
+  python cinnshift.py "#6d4aff" --theme-app Orchis-Light --theme-desktop CBlack --variant proton_mix
 
   # Single source for Desktop + Applications
-  python themecolorshift.py --random --theme-source Qogir-Light
+  python cinnshift.py --random --theme-source Qogir-Light
 
   # Apply palette transformation to a provided color
-  python themecolorshift.py "#6d4aff" --palette pale --theme-app Orchis-Light
+  python cinnshift.py "#6d4aff" --palette pale --theme-app Orchis-Light
 
   # Random color within a palette
-  python themecolorshift.py --palette neon --random --theme-source Qogir-Light
+  python cinnshift.py --palette neon --random --theme-source Qogir-Light
 
   # Selector: additionally recolor hover states (uses accent as target)
-  python themecolorshift.py --theme-source Qogir-Light --selector hover
+  python cinnshift.py --theme-source Qogir-Light --selector hover
 
   # Selector with color shift: shift accent + recolor hover blocks
-  python themecolorshift.py "#6d4aff" --theme-source Qogir-Light --selector hover
+  python cinnshift.py "#6d4aff" --theme-source Qogir-Light --selector hover
 
   # Selector: dynamic:static combo (hover on buttons only)
-  python themecolorshift.py "#6d4aff" --theme-app Orchis-Light --selector hover:button
+  python cinnshift.py "#6d4aff" --theme-app Orchis-Light --selector hover:button
 
   # Multiple selectors
-  python themecolorshift.py "#6d4aff" --theme-source Qogir-Light --selector hover --selector focus --selector separator
+  python cinnshift.py "#6d4aff" --theme-source Qogir-Light --selector hover --selector focus --selector separator
 
   # Free-form CSS selector
-  python themecolorshift.py "#6d4aff" --theme-app Orchis-Light --css ".button:hover"
+  python cinnshift.py "#6d4aff" --theme-app Orchis-Light --css ".button:hover"
 
   # Preview substitutions (--dry-run)
-  python themecolorshift.py "#6d4aff" --theme-source Qogir-Light --dry-run
+  python cinnshift.py "#6d4aff" --theme-source Qogir-Light --dry-run
 
   # Skip theme reload (--no-refresh)
-  python themecolorshift.py --random --theme-app Orchis-Light --no-refresh
+  python cinnshift.py --random --theme-app Orchis-Light --no-refresh
 """
 
 import sys
@@ -965,7 +965,7 @@ def next_available_number(base_name):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="AnyThemeColorShifter - Change accent color of any Cinnamon/GTK theme."
+        description="Anycinnshifter - Change accent color of any Cinnamon/GTK theme."
     )
     parser.add_argument("color", nargs='?', default=None,
                         help='Target color as hex (e.g. "#6d4aff"). '
@@ -1111,7 +1111,7 @@ def main():
 
     THEMES_DIR.mkdir(parents=True, exist_ok=True)
 
-    header = f"=== AnyThemeColorShifter"
+    header = f"=== Anycinnshifter"
     if target:
         header += f": {target}"
     elif selector_specs or css_patterns:
