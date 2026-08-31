@@ -28,10 +28,10 @@ Usage:
   python themecolorshift.py --random
 
   # Shift only Applications (GTK)
-  python themecolorshift.py --random --theme-app Orchis-Light --variant proton_mix
+  python themecolorshift.py --random --theme-app Orchis-Light --variant mix
 
   # Shift both Desktop and Applications from different sources
-  python themecolorshift.py "#6d4aff" --theme-app Orchis-Light --theme-desktop CBlack --variant proton_mix
+  python themecolorshift.py "#6d4aff" --theme-app Orchis-Light --theme-desktop CBlack --variant mix
 
   # Single source for Desktop + Applications
   python themecolorshift.py --random --theme-source Qogir-Light
