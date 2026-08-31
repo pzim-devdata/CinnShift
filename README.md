@@ -104,10 +104,8 @@ python cinnshift.py --random \
 **Effect:** the sweet spot for visible but tasteful recoloring. Interactive states come alive (hover glow, pressed buttons, checked boxes, selected rows, focused entries), separators get a subtle accent tint. Note: `focus` also fills focused text entries (including the Cinnamon menu search box) with the accent color.
 
 ```bash
-# Minimal footprint: hover and selections only, focus untouched
-python cinnshift.py --random \
-  --selector hover --selector checked --selector selected \
-  --selector separator
+# Minimal footprint
+python cinnshift.py --random   --selector hover --selector active --selector checked --selector selected --selector separator
 ```
 
 **Effect:** same recoloring minus the focus states. Fields (like the Cinnamon menu search entry) keep their original background: recommended if filled entry boxes bother you.
