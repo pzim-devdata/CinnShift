@@ -94,18 +94,18 @@ cinnshift.py "#6d4aff" --theme-app Orchis-Light --theme-desktop cinnamon
 ### Refined selectors (recommended)
 
 ```bash
-# Balanced recoloring: hover, pressed, checked, selected states
+# Balanced recoloring: hover, pressed, checked states
 # plus tinted separators. Rich visual impact, nothing obscured.
 python cinnshift.py --random \
-  --selector hover --selector active --selector checked --selector selected --selector calendar-cin\
+  --selector hover --selector active --selector checked --selector calendar-cin\
   --selector focus --selector separator --palette pale
 ```
 
-**Effect:** the sweet spot for visible but tasteful recoloring. Interactive states come alive (hover glow, pressed buttons, checked boxes, selected rows, focused entries), separators get a subtle accent tint. Note: `focus` also fills focused text entries (including the Cinnamon menu search box) with the accent color.
+**Effect:** the sweet spot for visible but tasteful recoloring. Interactive states come alive (hover glow, pressed buttons, checked boxes, focused entries), separators get a subtle accent tint. Note: `focus` also fills focused text entries (including the Cinnamon menu search box) with the accent color.
 
 ```bash
 # Minimal footprint
-python cinnshift.py --random   --selector hover --selector active --selector checked --selector selected --selector separator
+python cinnshift.py --random   --selector hover --selector active --selector checked --selector separator
 ```
 
 **Effect:** same recoloring minus the focus states. Fields (like the Cinnamon menu search entry) keep their original background: recommended if filled entry boxes bother you.
@@ -116,7 +116,7 @@ python cinnshift.py --random   --selector hover --selector active --selector che
 # The stubborn vertical line in calendar@cinnamon.org comes from
 # .calendar-events-main-box border-right, not from .separator:
 cinnshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon \
-  --selector hover --selector active --selector checked --selector selected \
+  --selector hover --selector active --selector checked \
   --selector separator --css ".calendar-events-main-box"
 ```
 
@@ -137,15 +137,17 @@ python cinnshift.py --random \
   --selector workspace --selector expo --selector alt-tab --selector desklet \
   --selector window-list --selector grouped-list \
   --selector hover --selector active --selector focus --selector focus-visible \
-  --selector checked --selector selected --selector disabled --selector visited \
+  --selector checked --selector disabled --selector visited \
   --selector indeterminate --selector backdrop --selector drop --selector drag
 ```
 
 **Effect:** the deepest recoloring CinnShift can perform: 44 selectors covering window chrome (headerbar, dialogs, sidebars, toolbars), all controls (buttons, entries, switches, sliders...), delimiters, Cinnamon shell elements (workspaces, expo, desklets, window lists) and every interactive state (hover, focus, checked, disabled...). Backgrounds of overlay surfaces are deliberately excluded to preserve text readability in applets.
+
 **Deliberately omitted selectors** (background carriers that would obscure applet content):
 
 | Selector | Reason |
 |----------|--------|
+| `selected` | Selected section is unreadable |
 | `tooltip` | Full background fill hides tooltip text |
 | `popover` | Full popup surface background |
 | `menu` | GTK dropdown/menu backgrounds |
