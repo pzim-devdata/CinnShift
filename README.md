@@ -39,7 +39,7 @@ There is no native tool to dynamically change accent colors in Cinnamon themes. 
 
 #### AFTER
 
-Applied command: `cinnshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --variant random`
+Applied command: `python cinnshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --selector hover --selector active --selector checked --selector separator --selector calendar-cin --variant random`
 
 ![After Theme](https://raw.githubusercontent.com/pzim-devdata/CinnShift/main/AFTER.png)
 
