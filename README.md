@@ -269,6 +269,7 @@ selector covers both the calendar grid and this border:
 ```bash
 # Recolor calendar grid + its vertical event border with the accent
 cinnshift.py "#2a6bc6" --theme-desktop cinnamon --selector calendar-cin
+```
 
 **Static elements ignore the neutral-color exclusion list:** gray separators, borders, and window frames get tinted with the accent hue while preserving their original lightness ratio.
 
