@@ -39,7 +39,7 @@ There is no native tool to dynamically change accent colors in Cinnamon themes. 
 
 #### AFTER
 
-Applied command: `python cinnshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --selector hover --selector active --selector checked --selector separator --selector calendar-cin --variant random`
+Applied command: `python cinnshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --selector menu-cin --selector expo --selector hover --selector active --selector checked --selector separator --selector calendar-cin --variant random`
 
 ![After Theme](https://raw.githubusercontent.com/pzim-devdata/CinnShift/main/AFTER.png)
 
@@ -97,7 +97,7 @@ cinnshift.py "#6d4aff" --theme-app Orchis-Light --theme-desktop cinnamon
 # Balanced recoloring: hover, pressed, checked states
 # plus tinted separators. Rich visual impact, nothing obscured.
 python cinnshift.py --random \
-  --selector hover --selector active --selector checked --selector calendar-cin\
+  --selector hover --selector menu-cin --selector expo --selector active --selector checked --selector calendar-cin\
   --selector focus --selector separator --palette pale
 ```
 
@@ -138,7 +138,7 @@ python cinnshift.py --random \
   --selector window-list --selector grouped-list \
   --selector hover --selector active --selector focus --selector focus-visible \
   --selector checked --selector disabled --selector visited \
-  --selector indeterminate --selector backdrop --selector drop --selector drag
+  --selector indeterminate --selector backdrop --selector drop --selector drag --selector menu-cin --selector calendar-cin
 ```
 
 **Effect:** the deepest recoloring CinnShift can perform: 44 selectors covering window chrome (headerbar, dialogs, sidebars, toolbars), all controls (buttons, entries, switches, sliders...), delimiters, Cinnamon shell elements (workspaces, expo, desklets, window lists) and every interactive state (hover, focus, checked, disabled...). Backgrounds of overlay surfaces are deliberately excluded to preserve text readability in applets.
@@ -151,10 +151,8 @@ python cinnshift.py --random \
 | `tooltip` | Full background fill hides tooltip text |
 | `popover` | Full popup surface background |
 | `menu` | GTK dropdown/menu backgrounds |
-| `menu-cin` | Cinnamon start menu background |
 | `notification` | Banner full background |
 | `osd` | System OSD popup background |
-| `calendar-cin` | Calendar widget background |
 | `panel` | Entire taskbar background |
 
 ### Soft palettes
@@ -333,7 +331,7 @@ Open **Startup Applications** in the Cinnamon menu, click **Add**, and enter:
 
 **Optional: only change color every 3rd day of the month between 6 and 9 for Applications (GTK) and Desktop (Cinnamon shell)** (limit churn):
 
-**Command**: `bash -c "D=$(date +%%-d); H=$(date +%%-H); if [ $((D/3*3)) -eq $D ] && [ $H -ge 6 ] && [ $H -le 9 ]; then `/home/YOUR_USERNAME/.local/bin/cinnshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --selector hover --selector active --selector checked --palette soft --variant random; fi"`
+**Command**: `bash -c "D=$(date +%%-d); H=$(date +%%-H); if [ $((D/3*3)) -eq $D ] && [ $H -ge 6 ] && [ $H -le 9 ]; then `/home/YOUR_USERNAME/.local/bin/cinnshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --selector hover --selector active --selector checked --palette soft --selector menu-cin --selector expo --selector calendar-cin --variant random; fi"`
 
 ---
 
