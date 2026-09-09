@@ -333,7 +333,7 @@ Open **Startup Applications** in the Cinnamon menu, click **Add**, and enter:
 
 **Optional: only change color every 3rd day of the month between 6 and 9 for Applications (GTK) and Desktop (Cinnamon shell)** (limit churn):
 
-**Command**: `bash -c "D=$(date +%%-d); H=$(date +%%-H); if [ $((D/3*3)) -eq $D ] && [ $H -ge 6] && [ $H -le 9 ]; then `/home/YOUR_USERNAME/.local/bin/cinnshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --selector hover --selector active --selector checked --palette soft --variant random; fi"`
+**Command**: `bash -c "D=$(date +%%-d); H=$(date +%%-H); if [ $((D/3*3)) -eq $D ] && [ $H -ge 6 ] && [ $H -le 9 ]; then `/home/YOUR_USERNAME/.local/bin/cinnshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --selector hover --selector active --selector checked --palette soft --variant random; fi"`
 
 ---
 
