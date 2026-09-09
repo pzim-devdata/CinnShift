@@ -331,9 +331,9 @@ Open **Startup Applications** in the Cinnamon menu, click **Add**, and enter:
 - **Name**: `CinnShift-Desktop`
 - **Command**: `/home/YOUR_USERNAME/.local/bin/cinnshift.py --random --theme-desktop cinnamon --variant auto`
 
-**Optional: only change color every 3rd day of the month** (limit churn):
+**Optional: only change color every 3rd day of the month between 6 and 9 for Applications (GTK) and Desktop (Cinnamon shell)** (limit churn):
 
-**Command**: `python3 -c "import datetime,subprocess,sys; sys.exit(0 if datetime.date.today().day % 3 else 1)" && /home/YOUR_USERNAME/.local/bin/cinnshift.py --random --theme-app Orchis-Light --variant auto`
+**Command**: `bash -c "D=$(date +%%-d); H=$(date +%%-H); if [ $((D/3*3)) -eq $D ] && [ $H -ge 6] && [ $H -le 9 ]; then `/home/YOUR_USERNAME/.local/bin/cinnshift.py --random --theme-app Orchis-Light --theme-desktop cinnamon --selector hover --selector active --selector checked --palette soft --variant random; fi"`
 
 ---
 
